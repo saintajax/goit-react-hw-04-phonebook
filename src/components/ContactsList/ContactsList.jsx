@@ -1,22 +1,32 @@
 import { List, Item, Text, Link, Btn } from './ContactsList.styled';
 import { PropTypes } from 'prop-types';
 import { ReactComponent as DelIcon } from '../icons/delete.svg';
+import { CSSTransition } from 'react-transition-group';
 
 export const ContactsList = ({ contacts, del }) => (
-  <List>
+  <List component="ul">
     {contacts.map(({ id, name, number }) => (
-      <Item key={id}>
-        <Text>
-          {name}: <Link href={`tel:${number}`}>{number}</Link>
-        </Text>
-        <Btn
-          onClick={() => {
-            del(id);
-          }}
-        >
-          <DelIcon width="40" height="40" fill="black" />
-        </Btn>
-      </Item>
+      <CSSTransition
+        key={id}
+        timeout={250}
+        classNames={{
+          enterActive: 'my-active-enter',
+          exitActive: 'my-active-exit',
+        }}
+      >
+        <Item>
+          <Text component="ul">
+            {name}: <Link href={`tel:${number}`}>{number}</Link>
+          </Text>
+          <Btn
+            onClick={() => {
+              del(id);
+            }}
+          >
+            <DelIcon width="40" height="40" fill="black" />
+          </Btn>
+        </Item>
+      </CSSTransition>
     ))}
   </List>
 );
